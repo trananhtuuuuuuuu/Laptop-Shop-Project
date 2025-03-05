@@ -6,5 +6,6 @@
 </head>
 <body>
   <h2>Hello from JSP</h2>
+  <h1>${eric}</h1>
 </body>
 </html>
