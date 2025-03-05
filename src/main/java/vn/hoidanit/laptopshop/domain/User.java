@@ -4,20 +4,30 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "users")
 public class User {
 
 
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   private long id;
+  
 
   private String email;
   private String password;
   private String fullName;
   private String address;
   private String phone;
+
+  private String avatar;
+  // roleID
+  //User many -> to one > role
+  @ManyToOne
+  private Role role;
 
   public long getId() {
     return id;
@@ -66,10 +76,19 @@ public class User {
     this.phone = phone;
   }
 
+  
+
   @Override
   public String toString(){
-    return "[id = " + this.id + " ,email = " + this.email  + " ,password = " + this.password +
-    " ,fullname = " + this.fullName + ", address = " + this.address + " ,phone = " + this.phone + "\n";
+    return "user [id = " + this.id + " ,email = " + this.email  + " ,password = " + this.password +
+    " ,fullname = " + this.fullName + ", address = " + this.address + " ,phone = " + this.phone + 
+    " ,avatar = " + this.avatar + "]\n";
+  }
+  public String getAvatar() {
+    return avatar;
+  }
+  public void setAvatar(String avatar) {
+    this.avatar = avatar;
   }
   
 
