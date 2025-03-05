@@ -28,5 +28,47 @@ public class OrderDetail {
   private Product product_id;
   //order_id: long
   // product_id: long
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
+
+  public long getQuantity() {
+    return quantity;
+  }
+
+  public void setQuantity(long quantity) {
+    this.quantity = quantity;
+  }
+
+  public double getPrice() {
+    return price;
+  }
+
+  public void setPrice(double price) {
+    this.price = price;
+  }
+
+  public Order getOrder() {
+    return order;
+  }
+
+  public void setOrder(Order order) {
+    this.order = order;
+  }
+
+  public Product getProduct_id() {
+    return product_id;
+  }
+
+  public void setProduct_id(Product product_id) {
+    this.product_id = product_id;
+  }
+
+  
   
 }
