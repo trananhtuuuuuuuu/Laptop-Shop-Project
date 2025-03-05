@@ -1,5 +1,7 @@
 package vn.hoidanit.laptopshop.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +30,11 @@ public class UserController{
   @RequestMapping("/")
   public String getHomePage(Model model) {
     model.addAttribute("eric", "test");// eric là tên access bên view, test là biến chứa value của nó
+    List<User> users = this.userService.getAllUsers();
+    System.out.println(users);
+    System.out.println("\n\n");
+    List<User> usersByEmail = this.userService.getAllUsersByEmail("1@gmail.com");
+    System.out.println(usersByEmail);
     return "hello";
   }
 
