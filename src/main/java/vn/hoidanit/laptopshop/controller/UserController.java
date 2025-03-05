@@ -41,16 +41,29 @@ public class UserController{
   @RequestMapping("/admin/user")
   public String getAdminUserPage(Model model) {
     model.addAttribute("newUser", new User());
+    return "admin/user/table-user";
+  }
+
+
+  // @RequestMapping(value = "/admin/user/create")
+  // public String createAdminUserPage(Model model, @ModelAttribute("newUser") User userGot) {
+  //   User user = this.userService.handleSaveUser(userGot);
+  //   System.out.println("run here" + user);
+  //   return "admin/user/create";
+  // }
+
+
+
+  @RequestMapping(value = "/admin/user/create", method = RequestMethod.GET)
+  public String createAdminUserPage(Model model, @ModelAttribute("newUser") User userGot) {
+    User user = this.userService.handleSaveUser(userGot);
+    System.out.println("run here" + user);
     return "admin/user/create";
   }
 
 
-  @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
-  public String createAdminUserPage(Model model, @ModelAttribute("newUser") User userGot) {
-    User user = this.userService.handleSaveUser(userGot);
-    System.out.println("run here" + user);
-    return "hello";
-  }
+
+
   
 
 }
