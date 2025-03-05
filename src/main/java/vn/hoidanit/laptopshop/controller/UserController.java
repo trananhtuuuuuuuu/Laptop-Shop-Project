@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.UserService;
 
 
@@ -26,6 +27,12 @@ public class UserController{
     String test = this.userService.handleHello();
     model.addAttribute("eric", test);// eric là tên access bên view, test là biến chứa value của nó
     return "hello";
+  }
+
+  @RequestMapping("/admin/user")
+  public String getAdminUserPage(Model model) {
+    model.addAttribute("newUser", new User());
+    return "admin/user/create";
   }
   
 
