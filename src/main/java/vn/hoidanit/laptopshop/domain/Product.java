@@ -1,9 +1,12 @@
 package vn.hoidanit.laptopshop.domain;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,6 +27,9 @@ public class Product {
   private String factory;
   private String target;
 
+
+  // 1 product hasMany OrderDetail
+  
 
 
   public long getId() {
