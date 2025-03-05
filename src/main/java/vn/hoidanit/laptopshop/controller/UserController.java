@@ -20,18 +20,14 @@ import vn.hoidanit.laptopshop.service.UserService;
 public class UserController{ 
 
   private final UserService userService;
-  private final UserRepository userRepository;
 
-  public UserController(UserService userService, 
-  UserRepository userRepository) {
+  public UserController(UserService userService) {
     this.userService = userService;
-    this.userRepository = userRepository;
   }
 
   @RequestMapping("/")
   public String getHomePage(Model model) {
-    String test = this.userService.handleHello();
-    model.addAttribute("eric", test);// eric là tên access bên view, test là biến chứa value của nó
+    model.addAttribute("eric", "test");// eric là tên access bên view, test là biến chứa value của nó
     return "hello";
   }
 
@@ -44,7 +40,7 @@ public class UserController{
 
   @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
   public String createAdminUserPage(Model model, @ModelAttribute("newUser") User userGot) {
-    User user = this.userRepository.save(userGot);
+    User user = this.userService.handleSaveUser(userGot);
     System.out.println("run here" + user);
     return "hello";
   }
