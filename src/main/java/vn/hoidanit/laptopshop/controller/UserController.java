@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import vn.hoidanit.laptopshop.domain.User;
+import vn.hoidanit.laptopshop.repository.UserRepository;
 import vn.hoidanit.laptopshop.service.UserService;
 
 
@@ -19,9 +20,12 @@ import vn.hoidanit.laptopshop.service.UserService;
 public class UserController{ 
 
   private final UserService userService;
+  private final UserRepository userRepository;
 
-  public UserController(UserService userService) {
+  public UserController(UserService userService, 
+  UserRepository userRepository) {
     this.userService = userService;
+    this.userRepository = userRepository;
   }
 
   @RequestMapping("/")
@@ -40,7 +44,8 @@ public class UserController{
 
   @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
   public String createAdminUserPage(Model model, @ModelAttribute("newUser") User userGot) {
-    System.out.println("run here" + userGot);
+    User user = this.userRepository.save(userGot);
+    System.out.println("run here" + user);
     return "hello";
   }
   
