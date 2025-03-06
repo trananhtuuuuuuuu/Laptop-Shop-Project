@@ -45,26 +45,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>
-                <div class="btn btn-success">View</div>
-                <div class="btn btn-warning">Update</div>
-                <div class="btn btn-danger">Delete</div>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>
-                <div class="btn btn-success">View</div>
-                <div class="btn btn-warning">Update</div>
-                <div class="btn btn-danger">Delete</div>
-              </td>
-            </tr>
+            
             
           </tbody>
         </table>
