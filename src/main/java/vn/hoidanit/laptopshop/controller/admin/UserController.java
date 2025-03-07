@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.servlet.ServletContext;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.UserService;
 import vn.hoidanit.laptopshop.service.UploadService;
@@ -33,7 +32,6 @@ public class UserController{
 
 
   public UserController(UserService userService,
-  ServletContext servletContext,
   UploadService uploadService,
   PasswordEncoder passwordEncoder) {
     this.userService = userService;
@@ -44,16 +42,16 @@ public class UserController{
 
 
 
-  @GetMapping("/")
-  public String getHomePage(Model model) {
-    model.addAttribute("eric", "test");// eric là tên access bên view, test là biến chứa value của nó
-    List<User> users = this.userService.getAllUsers();
-    System.out.println("List users = " + users);
-    System.out.println("\n\n");
-    List<User> usersByEmail = this.userService.getAllUsersByEmail("1@gmail.com");
-    System.out.println("List users with email = 1@gmail.com" + usersByEmail);
-    return "hello";
-  }
+  // @GetMapping("/")
+  // public String getHomePage(Model model) {
+  //   model.addAttribute("eric", "test");// eric là tên access bên view, test là biến chứa value của nó
+  //   List<User> users = this.userService.getAllUsers();
+  //   System.out.println("List users = " + users);
+  //   System.out.println("\n\n");
+  //   List<User> usersByEmail = this.userService.getAllUsersByEmail("1@gmail.com");
+  //   System.out.println("List users with email = 1@gmail.com" + usersByEmail);
+  //   return "hello";
+  // }
 
 
 
