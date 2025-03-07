@@ -102,33 +102,30 @@ public class UserController{
   @ModelAttribute("newUser") User userGot,
    @RequestParam("imageFile") MultipartFile file){
     //  private final ServletContext servletContext;
-    this.userService.handleSaveUser(userGot);
-    // try {
-    //   byte[] bytes;
-    //   bytes = file.getBytes();
+    //this.userService.handleSaveUser(userGot);
+    try {
+      byte[] bytes = file.getBytes();
+      
      
-    //   String rootPath = this.servletContext.getRealPath("/resources/images");
+      String rootPath = this.servletContext.getRealPath("/resources/images");
 
-    //   File dir = new File(rootPath + File.separator + "avatar");
-    //   if (!dir.exists())
-    //       dir.mkdirs();
+      File dir = new File(rootPath + File.separator + "avatar");
+      if (!dir.exists())
+          dir.mkdirs();
 
-    //   // Create the file on server
-    //   File serverFile = new File(dir.getAbsolutePath() + File.separator +
-    //           + System.currentTimeMillis() + "-" + file.getOriginalFilename());
+      // Create the file on server
+      File serverFile = new File(dir.getAbsolutePath() + File.separator +
+              + System.currentTimeMillis() + "-" + file.getOriginalFilename());
 
-    //   BufferedOutputStream stream = new BufferedOutputStream(
-    //           new FileOutputStream(serverFile));
-    //   stream.write(bytes);
-    //   stream.close();
-    
+      BufferedOutputStream stream = new BufferedOutputStream(
+              new FileOutputStream(serverFile));
+      stream.write(bytes);
+      stream.close();
 
-
-
-    // } catch (IOException e) {
-    // // TODO Auto-generated catch block
-    // e.printStackTrace();
-    // }
+    } catch (IOException e) {
+    // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     return "redirect:/admin/user";
    
   }

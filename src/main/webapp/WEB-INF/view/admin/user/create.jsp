@@ -54,7 +54,7 @@
                           <h3>Create a user</h3>
                           <hr/>
                           <form:form method="post" 
-                          action="/" 
+                          action="/admin/user/create" 
                           modelAttribute="newUser" 
                           class="row" 
                           enctype="multipart/form-data">
