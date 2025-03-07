@@ -1,5 +1,9 @@
 package vn.hoidanit.laptopshop.controller.admin;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -8,9 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.ServletContext;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.UserService;
 
@@ -22,11 +27,15 @@ public class UserController{
 
   private final UserService userService;
 
-  public UserController(UserService userService) {
+  private final ServletContext servletContext;
+
+  public UserController(UserService userService,
+  ServletContext servletContext) {
     this.userService = userService;
+    this.servletContext = servletContext;
   }
 
-  @RequestMapping("/")
+  @GetMapping("/")
   public String getHomePage(Model model) {
     model.addAttribute("eric", "test");// eric là tên access bên view, test là biến chứa value của nó
     List<User> users = this.userService.getAllUsers();
@@ -37,7 +46,7 @@ public class UserController{
     return "hello";
   }
 
-  @RequestMapping("admin/user") // RequestMapping mean get data, so default method is GET
+  @GetMapping("admin/user") // RequestMapping mean get data, so default method is GET
   public String getUserPage(Model model){
     List<User> users = this.userService.getAllUsers();
     System.out.println(users);
@@ -48,7 +57,7 @@ public class UserController{
 
 
 
-  @RequestMapping("admin/user/{id}") // RequestMapping mean get data, so default method is GET
+  @GetMapping("admin/user/{id}") // RequestMapping mean get data, so default method is GET
   public String getUserDetailPage(Model model,
   @PathVariable long id){
     System.out.println("check path id = " + id);
@@ -63,11 +72,10 @@ public class UserController{
 
   // đây là hàm sau khi nhấn button create user ở
   // góc bên phải của trang admin/user
-  @RequestMapping("/admin/user/create") // RequestMapping mean get data, so default method is GET
-  public String createUserPage(Model model){
+  @GetMapping("/admin/user/create") // RequestMapping mean get data, so default method is GET
+  public String getCreateUserPage(Model model){
     model.addAttribute("newUser", new User()); // Hàm tạo User() mặc định của class User trong domain(model)
     return "admin/user/create";
-   
   }
 
 
@@ -89,19 +97,46 @@ public class UserController{
   // tính tương ứng để chứa các dữ liệu đó, còn tên object thể hiện cho class mà chứa dữ liệu sau khi được nhập vào từ người dùng là hoidanit
   // Dữ liệu này sau khi nhập vào thì chúng ta cần phải dùng hệ quản trị cơ sở dữ liệu để lưu lại, chứ không mỗi lần f5 lại là chúng ta sẽ 
   // mất hết dữ liệu
-  @RequestMapping(value = "/admin/user/create", method=RequestMethod.POST) // RequestMapping mean get data, so default method is GET
+  @PostMapping(value="/admin/user/create") // RequestMapping mean get data, so default method is GET
   public String createUserPage(Model model, 
-  @ModelAttribute("newUser") User userGot){
-
-    System.out.println(" run here " + userGot);
+  @ModelAttribute("newUser") User userGot,
+   @RequestParam("imageFile") MultipartFile file){
+    //  private final ServletContext servletContext;
     this.userService.handleSaveUser(userGot);
-    model.addAttribute("newUser", new User()); // Hàm tạo User() mặc định của class User trong domain(model)
+    // try {
+    //   byte[] bytes;
+    //   bytes = file.getBytes();
+     
+    //   String rootPath = this.servletContext.getRealPath("/resources/images");
+
+    //   File dir = new File(rootPath + File.separator + "avatar");
+    //   if (!dir.exists())
+    //       dir.mkdirs();
+
+    //   // Create the file on server
+    //   File serverFile = new File(dir.getAbsolutePath() + File.separator +
+    //           + System.currentTimeMillis() + "-" + file.getOriginalFilename());
+
+    //   BufferedOutputStream stream = new BufferedOutputStream(
+    //           new FileOutputStream(serverFile));
+    //   stream.write(bytes);
+    //   stream.close();
+    
+
+
+
+    // } catch (IOException e) {
+    // // TODO Auto-generated catch block
+    // e.printStackTrace();
+    // }
     return "redirect:/admin/user";
    
   }
 
 
-   @RequestMapping("/admin/user/update/{id}") // RequestMapping mean get data, so default method is GET
+
+
+  @GetMapping("/admin/user/update/{id}") // RequestMapping mean get data, so default method is GET
   public String getUpdateUser(Model model,
   @PathVariable long id){
     
