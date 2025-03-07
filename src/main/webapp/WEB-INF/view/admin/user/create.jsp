@@ -109,7 +109,7 @@
                               type="file" 
                               id="avatarFile"
                               accept=".png, .jpg, .jpeg"
-                              name="imageFile"
+                              name="imageFile"                                                 
                               />
                             </div>
                             <div class="col-12 mb-3">

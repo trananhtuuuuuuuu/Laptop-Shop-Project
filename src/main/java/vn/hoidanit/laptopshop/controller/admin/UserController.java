@@ -1,9 +1,6 @@
 package vn.hoidanit.laptopshop.controller.admin;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -18,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.ServletContext;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.UserService;
-
+import vn.hoidanit.laptopshop.service.UploadService;
 
 
 
@@ -27,33 +24,43 @@ public class UserController{
 
   private final UserService userService;
 
-  private final ServletContext servletContext;
+  private final UploadService uploadService;
+
 
   public UserController(UserService userService,
-  ServletContext servletContext) {
+  ServletContext servletContext,
+  UploadService uploadService) {
     this.userService = userService;
-    this.servletContext = servletContext;
+    this.uploadService = uploadService;
   }
+
+
+
 
   @GetMapping("/")
   public String getHomePage(Model model) {
     model.addAttribute("eric", "test");// eric là tên access bên view, test là biến chứa value của nó
     List<User> users = this.userService.getAllUsers();
-    System.out.println(users);
+    System.out.println("List users = " + users);
     System.out.println("\n\n");
     List<User> usersByEmail = this.userService.getAllUsersByEmail("1@gmail.com");
-    System.out.println(usersByEmail);
+    System.out.println("List users with email = 1@gmail.com" + usersByEmail);
     return "hello";
   }
+
+
+
 
   @GetMapping("admin/user") // RequestMapping mean get data, so default method is GET
   public String getUserPage(Model model){
     List<User> users = this.userService.getAllUsers();
-    System.out.println(users);
+    //System.out.println(users);
     model.addAttribute("users", users);
     return "admin/user/show";
    
   }
+
+
 
 
 
@@ -70,6 +77,9 @@ public class UserController{
    
   }
 
+
+
+
   // đây là hàm sau khi nhấn button create user ở
   // góc bên phải của trang admin/user
   @GetMapping("/admin/user/create") // RequestMapping mean get data, so default method is GET
@@ -79,13 +89,6 @@ public class UserController{
   }
 
 
-
-  // @RequestMapping(value = "/admin/user/create")
-  // public String createAdminUserPage(Model model, @ModelAttribute("newUser") User userGot) {
-  //   User user = this.userService.handleSaveUser(userGot);
-  //   System.out.println("run here" + user);
-  //   return "admin/user/create";
-  // }
 
 
 
@@ -103,29 +106,8 @@ public class UserController{
    @RequestParam("imageFile") MultipartFile file){
     //  private final ServletContext servletContext;
     //this.userService.handleSaveUser(userGot);
-    try {
-      byte[] bytes = file.getBytes();
-      
-     
-      String rootPath = this.servletContext.getRealPath("/resources/images");
-
-      File dir = new File(rootPath + File.separator + "avatar");
-      if (!dir.exists())
-          dir.mkdirs();
-
-      // Create the file on server
-      File serverFile = new File(dir.getAbsolutePath() + File.separator +
-              + System.currentTimeMillis() + "-" + file.getOriginalFilename());
-
-      BufferedOutputStream stream = new BufferedOutputStream(
-              new FileOutputStream(serverFile));
-      stream.write(bytes);
-      stream.close();
-
-    } catch (IOException e) {
-    // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    String fileName = this.uploadService.handleSaveUploadFile(file, "avatar");
+    System.out.println("File name image = " + fileName);
     return "redirect:/admin/user";
    
   }
@@ -143,6 +125,10 @@ public class UserController{
     return "admin/user/update";
    
   }
+
+
+
+
 
 
 
@@ -166,6 +152,10 @@ public class UserController{
 
 
 
+
+
+
+
   @GetMapping("admin/user/delete/{id}") // RequestMapping mean get data, so default method is GET
   public String deleteUserDetail(Model model,
   @PathVariable long id){
@@ -180,6 +170,11 @@ public class UserController{
     return "admin/user/delete";
    
   }
+
+
+
+
+
 
 
   @PostMapping("admin/user/delete") // RequestMapping mean get data, so default method is GET
