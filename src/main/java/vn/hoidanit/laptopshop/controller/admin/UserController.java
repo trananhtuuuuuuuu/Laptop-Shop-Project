@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.Valid;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.UserService;
 import vn.hoidanit.laptopshop.service.UploadService;
@@ -105,10 +108,24 @@ public class UserController{
   // mất hết dữ liệu
   @PostMapping(value="/admin/user/create") // RequestMapping mean get data, so default method is GET
   public String createUserPage(Model model, 
-  @ModelAttribute("newUser") User userGot,
-   @RequestParam("imageFile") MultipartFile file){
+  @ModelAttribute("newUser") @Valid User userGot,
+  BindingResult bindingResult,
+   @RequestParam("imageFile") MultipartFile file
+   ){
     //  private final ServletContext servletContext;
     //
+
+    // xử lý validate, trong trường hợp nhập vào ô input tạo mói người dùng sai với dữ liệu quy định
+    // trong anotation đã thêm vào các biến trong domain.user
+    // xử lý tại đây, và cũng sử dụng anotation của java spring
+    // Để làm được điều đó, chúng ta cần phải nói với spring rằng là:
+    // Tao cần validate đối tượng nào, hàm, method với anotation là #valid
+     List<FieldError> errors = bindingResult.getFieldErrors();
+    for (FieldError error : errors ) {
+        System.out.println (error.getObjectName() + " - " + error.getDefaultMessage());
+    }
+
+
     String fileName = this.uploadService.handleSaveUploadFile(file, "avatar");
     String hashPassword = this.passwordEncoder.encode(userGot.getPassword());
     

@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -26,11 +27,11 @@ public class User {
   private String email;
 
   @NotNull
-  @Size(min = 3)
+  @Min(2)
   private String password;
 
   @NotNull
-  @Size(min = 2)
+  @Min(2)
   private String fullName;
 
 
