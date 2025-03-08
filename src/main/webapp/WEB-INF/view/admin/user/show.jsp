@@ -28,10 +28,10 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Manage Users</h1>
+                    <h1 class="mt-4">Manage Products</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Users</li>
+                        <li class="breadcrumb-item active">Products</li>
                     </ol>
                     
 
@@ -39,9 +39,9 @@
                       <div class="row">
                         <div class="col-12 mx-auto">
                           <div class="d-flex justify-content-between">
-                            <h3>Table users</h3>
-                            <a href="/admin/user/create" class="btn btn-primary"
-                              >Create a user</a
+                            <h3>Table products</h3>
+                            <a href="/admin/product/create" class="btn btn-primary"
+                              >Create a product</a
                             >
                           </div>
                           <hr />
@@ -50,14 +50,14 @@
                             <thead>
                               <tr>
                                 <th scope="col">ID</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Full Name</th>
-                                <th scope="col">Role</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Factory</th>
                                 <th scope="col">Action</th>
                               </tr>
                             </thead>
                             <tbody>
-                              <c:forEach var="user" items="${users}">
+                              <!-- <c:forEach var="user" items="${users}">
                                 <tr>
                                   <th scope="row">${user.id}</th>
                                   <td>${user.email}</td>
@@ -82,7 +82,7 @@
                                   </td>
                                 </tr>
                                 
-                              </c:forEach>
+                              </c:forEach> -->
                             </tbody>
                           </table>
 
