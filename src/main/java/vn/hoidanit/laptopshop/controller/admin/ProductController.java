@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -39,11 +41,6 @@ public class ProductController {
   UploadService uploadService) {
     this.productService = productService;
     this.uploadService = uploadService;
-  }
-
-  @GetMapping("/admin/product")
-  public String getProduct() {
-      return "admin/product/show";
   }
 
   // GET để render dữ liệu với url /admin/product/create
@@ -88,5 +85,16 @@ public class ProductController {
 
       return "admin/product/show";
   }
+
+
+  @GetMapping("/admin/product")
+  public String postProduct(Model model) {
+      //TODO: process POST request
+      List<Product> products = this.productService.getAllProducts();
+
+      model.addAttribute("products", products);
+      return "/admin/product/show";
+  }
+  
   
 }
