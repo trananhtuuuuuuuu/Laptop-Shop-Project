@@ -120,7 +120,7 @@ public class UserController{
     // xử lý tại đây, và cũng sử dụng anotation của java spring
     // Để làm được điều đó, chúng ta cần phải nói với spring rằng là:
     // Tao cần validate đối tượng nào, hàm, method với anotation là #valid
-     List<FieldError> errors = newUserBindingResult.getFieldErrors();
+    List<FieldError> errors = newUserBindingResult.getFieldErrors();
     for (FieldError error : errors ) {
         System.out.println (error.getField() + " - " + error.getDefaultMessage());
     }

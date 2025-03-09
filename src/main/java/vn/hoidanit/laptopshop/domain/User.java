@@ -37,7 +37,7 @@ public class User {
   private String password;
 
   @NotNull
-  @Min(value = 2, message = "Fullname phải có tối thiếu 3 ký tự")
+  @Min(value = 3, message = "Fullname phải có tối thiếu 3 ký tự")
   private String fullName;
 
 

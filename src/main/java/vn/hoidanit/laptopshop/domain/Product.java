@@ -7,6 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "products")
@@ -15,13 +18,32 @@ public class Product {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-
+  @NotNull
+  @Size(min=3, message = "Name min is three character")
   private String name;
+
+  @NotNull
+  @Min(value=1, message = "Not empty for price")
   private double price;
+
+
   private String image;
+
+
+  @NotNull
+  @Size(min=1, message = "Detail description for product")
   private String detailDesc;
+
+
+  @NotNull
+  @Size(min=1, message = "Short description for product")
   private String shortDesc;
+
+
+  @NotNull
+  @Min(value = 1, message = "Must be to enter for quantity")
   private long quantity;
+
   private long sold;
   private String factory;
   private String target;
