@@ -109,7 +109,7 @@ public class UserController{
   @PostMapping(value="/admin/user/create") // RequestMapping mean get data, so default method is GET
   public String createUserPage(Model model, 
   @ModelAttribute("newUser") @Valid User userGot,
-  BindingResult bindingResult,
+  BindingResult newUserBindingResult,
    @RequestParam("imageFile") MultipartFile file
    ){
     //  private final ServletContext servletContext;
@@ -120,9 +120,13 @@ public class UserController{
     // xử lý tại đây, và cũng sử dụng anotation của java spring
     // Để làm được điều đó, chúng ta cần phải nói với spring rằng là:
     // Tao cần validate đối tượng nào, hàm, method với anotation là #valid
-     List<FieldError> errors = bindingResult.getFieldErrors();
+     List<FieldError> errors = newUserBindingResult.getFieldErrors();
     for (FieldError error : errors ) {
-        System.out.println (error.getObjectName() + " - " + error.getDefaultMessage());
+        System.out.println (error.getField() + " - " + error.getDefaultMessage());
+    }
+
+    if(newUserBindingResult.hasErrors()){
+      return "/admin/user/create";
     }
 
 
