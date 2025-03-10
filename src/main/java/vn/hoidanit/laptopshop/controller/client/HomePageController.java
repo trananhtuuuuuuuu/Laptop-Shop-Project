@@ -3,7 +3,6 @@ package vn.hoidanit.laptopshop.controller.client;
 import java.util.List;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.validation.Valid;
 import vn.hoidanit.laptopshop.domain.dto.RegisterDTO;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -74,9 +75,16 @@ public class HomePageController {
 
   @GetMapping("/login")
   public String getLoginPage(Model model) {
-   
     return "client/auth/login";
   }
+
+  @PostMapping("/login")
+  public String postMethodName(@ModelAttribute("user") User user) {
+    
+      
+    return "product/user";
+  }
+  
   
   
 }
