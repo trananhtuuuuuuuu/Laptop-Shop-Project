@@ -2,6 +2,8 @@ package vn.hoidanit.laptopshop.controller.client;
 
 import java.util.List;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,8 @@ import vn.hoidanit.laptopshop.service.ProductService;
 import vn.hoidanit.laptopshop.service.UserService;
 import vn.hoidanit.laptopshop.domain.User;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import jakarta.validation.Valid;
 import vn.hoidanit.laptopshop.domain.dto.RegisterDTO;
 
 
@@ -49,7 +53,12 @@ public class HomePageController {
 
 
   @PostMapping("/register")
-  public String postRegisterPage(@ModelAttribute("registerUser") RegisterDTO registerDTO) {
+  public String postRegisterPage(@ModelAttribute("registerUser") @Valid RegisterDTO registerDTO,
+  BindingResult bindingResult) {
+
+    if(bindingResult.hasErrors()){
+      return "client/auth/register";
+    }
 
     User user = this.userService.registerDTOtoUser(registerDTO);
 
