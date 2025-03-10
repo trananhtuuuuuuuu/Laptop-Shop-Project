@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="Hỏi Dân IT - Dự án laptopshop" />
     <meta name="author" content="Hỏi Dân IT" />
-    <title>Delete</title>
+    <title>Delete Product</title>
     <link href="/css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
@@ -28,22 +28,23 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Manage Users</h1>
+                    <h1 class="mt-4">Manage Products</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Users</li>
+                      <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                      <li class="breadcrumb-item"><a href="/admin/product">Product</a></li>
+                      <li class="breadcrumb-item active">Delete</li>
                     </ol>
                     
 
                     <div class="container mt-5">
-                      <h2>Delete the user with id = ${id}</h2>
+                      <h2>Delete the product with id = ${id}</h2>
                       <hr />
                       <div class="alert alert-danger" role="alert">
-                        Are you sure to delete this user?
+                        Are you sure to delete this product?
                       </div>
                       <form:form
-                        modelAttribute="newUser"
-                        action="/admin/user/delete"
+                        modelAttribute="product"
+                        action="/admin/product/delete"
                         method="post"
                       >
                         <div class="mb-3" style="display: none">
