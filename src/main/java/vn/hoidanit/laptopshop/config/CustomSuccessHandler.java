@@ -44,7 +44,8 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler  {
 }
 
 
-protected void clearAuthenticationAttributes(HttpServletRequest request, Authentication authentication) {
+protected void clearAuthenticationAttributes(HttpServletRequest request, 
+Authentication authentication) {
     HttpSession session = request.getSession(false);
     if (session == null) {
         return;
