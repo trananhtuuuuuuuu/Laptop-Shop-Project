@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -16,8 +17,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import vn.hoidanit.laptopshop.service.UserService;
+import vn.hoidanit.laptopshop.domain.User;
 
 public class CustomSuccessHandler implements AuthenticationSuccessHandler  {
+
+  @Autowired
+  private UserService userService;
 
 
   protected String determineTargetUrl(final Authentication authentication) {
@@ -38,12 +44,24 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler  {
 }
 
 
-protected void clearAuthenticationAttributes(HttpServletRequest request) {
+protected void clearAuthenticationAttributes(HttpServletRequest request, Authentication authentication) {
     HttpSession session = request.getSession(false);
     if (session == null) {
         return;
     }
     session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+    // Lấy email người dùng từ spring security ra, sau khi có email
+    // Dùng service thông qua email để lấy tên người dùng
+    // get Email
+    String email = authentication.getName();
+    //get User 
+    User user = this.userService.getUserByEmail(email);
+    if(user != null){
+      session.setAttribute("fullName", user.getFullName());
+      session.setAttribute("avatar", user.getAvatar());
+    }
+
+    
 }
 
 
@@ -61,7 +79,7 @@ protected void clearAuthenticationAttributes(HttpServletRequest request) {
     }
 
     redirectStrategy.sendRedirect(request, response, targetUrl);
-    clearAuthenticationAttributes(request);
+    clearAuthenticationAttributes(request, authentication);
   }
   
 }

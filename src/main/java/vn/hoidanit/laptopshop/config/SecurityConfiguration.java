@@ -43,7 +43,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public AuthenticationSuccessHandler customSuccessHandler(){
+    public AuthenticationSuccessHandler customSuccessHandler() {
         return new CustomSuccessHandler();
     }
 
