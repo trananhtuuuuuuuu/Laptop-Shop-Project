@@ -56,7 +56,7 @@ public class ProductController {
   @RequestParam("imageFile") MultipartFile file) {
 
     if(newProductBindingResult.hasErrors()){
-      return "/admin/product/create";
+      return "admin/product/create";
     }
 
 
@@ -82,7 +82,7 @@ public class ProductController {
       List<Product> products = this.productService.getAllProducts();
 
       model.addAttribute("products", products);
-      return "/admin/product/show";
+      return "admin/product/show";
   }
   
 
@@ -95,7 +95,7 @@ public class ProductController {
     System.out.println(product);
     model.addAttribute("product", product);
     model.addAttribute("id", id);
-    return "/admin/product/detail";
+    return "admin/product/detail";
   }
 
 
@@ -107,7 +107,7 @@ public class ProductController {
     Product product = this.productService.getProductById(id);
     model.addAttribute("product", product);
     model.addAttribute("id", id);
-    return "/admin/product/update";
+    return "admin/product/update";
   }
 
 
