@@ -67,9 +67,9 @@ public class ItemController {
 
     // Tiếp theo sẽ cần lấy danh sách của từng product trong giỏ hàng bằng hàm sau
     List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
-    if(cartDetails.isEmpty()){
-      return "client/cart/emptyShow";
-    }
+    // if(cartDetails.isEmpty()){
+    //   return "client/cart/emptyShow";
+    // }
     double totalPrice = 0;
 
     for(CartDetail cd : cartDetails){
