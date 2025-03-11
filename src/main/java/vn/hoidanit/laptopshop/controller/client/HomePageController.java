@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.validation.Valid;
 import vn.hoidanit.laptopshop.domain.dto.RegisterDTO;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
