@@ -1,6 +1,7 @@
 package vn.hoidanit.laptopshop.controller.client;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -65,8 +66,10 @@ public class ItemController {
     // productService để lấy giỏ hàng của một user 
 
     // Tiếp theo sẽ cần lấy danh sách của từng product trong giỏ hàng bằng hàm sau
-    List<CartDetail> cartDetails = cart.getCartDetails();
-
+    List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
+    if(cartDetails.isEmpty()){
+      return "client/cart/emptyShow";
+    }
     double totalPrice = 0;
 
     for(CartDetail cd : cartDetails){
