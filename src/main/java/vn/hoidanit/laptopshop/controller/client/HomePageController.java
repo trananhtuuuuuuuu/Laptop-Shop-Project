@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.validation.Valid;
 import vn.hoidanit.laptopshop.domain.dto.RegisterDTO;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -83,6 +85,12 @@ public class HomePageController {
     
       
     return "product/user";
+  }
+  
+
+  @GetMapping("/access-deny")
+  public String getMethodName(Model model) {
+      return "client/auth/deny";
   }
   
   
