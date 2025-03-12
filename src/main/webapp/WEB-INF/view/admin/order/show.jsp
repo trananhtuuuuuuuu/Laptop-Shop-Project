@@ -46,7 +46,7 @@
                         <hr />
 
                         <table class="table table-bordered table-hover">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                            
                           <thead>
                             <tr>
                               <th scope="col">ID</th>
@@ -61,7 +61,7 @@
                               <tr>
                                 <th scope="row">${order.id}</th>
                                 <td><fmt:formatNumber type="number" value="${order.totalPrice}"/> đ</td>
-                                <td>${order.receiverPhone}</td>
+                                <td>${order.user.fullName}</td>
                                 <td>${order.status}</td>
                                 <td>
                                   <a href="/admin/order/${order.id}" class="btn btn-success">
