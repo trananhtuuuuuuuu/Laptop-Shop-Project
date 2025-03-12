@@ -131,4 +131,46 @@ public class ProductService {
 
   }
 
+
+  public CartDetail getCartDetailById(long id){
+    return this.cartDetailRepository.findById(id);
+  }
+
+
+  public void deleteCartDetail(long cartDetailId, HttpSession session){
+    CartDetail cartDetail = this.getCartDetailById(cartDetailId);
+    if(cartDetail != null){
+      Cart currentCart = cartDetail.getCart();
+
+      this.cartDetailRepository.deleteById(cartDetailId);
+
+      //update cart
+      if (currentCart.getSum() > 1) {
+        // update current cart
+        int s = currentCart.getSum() - 1;
+        currentCart.setSum(s);
+        session.setAttribute("sum", s);
+        this.cartRepository.save(currentCart);
+      } else {
+        // delete cart (sum = 1)
+        this.cartRepository.deleteById(currentCart.getId());
+        session.setAttribute("sum", 0);
+    }
+
+
+      //
+    }
+  }
+
+
+  public void handleUpdateCartBeforeCheckout(List<CartDetail> cartDetails) {
+    for (CartDetail cartDetail : cartDetails) {
+        CartDetail cdOptional = this.cartDetailRepository.findById(cartDetail.getId());
+        if (cdOptional != null) {
+            cdOptional.setQuantity(cartDetail.getQuantity());
+            this.cartDetailRepository.save(cdOptional);
+        }
+    }
+}
+
 }
