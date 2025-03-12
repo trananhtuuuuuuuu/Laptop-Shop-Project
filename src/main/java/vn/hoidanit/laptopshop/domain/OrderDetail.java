@@ -60,11 +60,11 @@ public class OrderDetail {
     this.order = order;
   }
 
-  public Product getProduct_id() {
+  public Product getProduct() {
     return product_id;
   }
 
-  public void setProduct_id(Product product_id) {
+  public void setProduct(Product product_id) {
     this.product_id = product_id;
   }
 
