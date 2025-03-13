@@ -98,6 +98,10 @@ public class ProductController {
       List<Product> listProducts = products.getContent();
 
       model.addAttribute("products", listProducts);
+
+      model.addAttribute("currentPage", page);
+
+      model.addAttribute("totalPages", products.getTotalPages());
       return "admin/product/show";
   }
   
