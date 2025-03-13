@@ -2,6 +2,7 @@ package vn.hoidanit.laptopshop.controller.admin;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -62,7 +63,21 @@ public class UserController{
 
   @GetMapping("admin/user") // RequestMapping mean get data, so default method is GET
   public String getUserPage(Model model,
-  @RequestParam("page") int page){
+   @RequestParam("page") Optional<String> pageOptional){
+
+
+    int page = 1;
+    try{ 
+      if(pageOptional.isPresent()){ 
+        //convert from String to int
+        page = Integer.parseInt(pageOptional.get());
+      }
+      else{
+        //page = 1
+      }
+    } catch(Exception e){
+      //page = 1
+    }
 
 
     Pageable pageable = PageRequest.of(page - 1, 2);
