@@ -1,7 +1,12 @@
 package vn.hoidanit.laptopshop.controller.admin;
 
+
+
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -78,10 +83,21 @@ public class ProductController {
 
 
   @GetMapping("/admin/product")
-  public String postProduct(Model model) {
-      List<Product> products = this.productService.getAllProducts();
+  public String postProduct(Model model,
+  @RequestParam("page") int page) {
 
-      model.addAttribute("products", products);
+    //thực tế thì DB quan tâm 2 tham số laf offset và limit
+    //client chỉ quan tâm page, truyền bằng page hoặc limit
+    // Ví dụ page = 1 . limit = 10 thì
+    // dưới DB có 100 rows. Ví dụ count = 100 => chia limit = 10 pages
+
+    Pageable pageable = PageRequest.of(page - 1, 2); // tham số đầu tiên là pageNumber: La phía gửi lên từ client
+    // và tham số thứ 2 là pageSize: Số lượng phần tử muốn lấy
+
+      Page<Product> products = this.productService.getAllProducts(pageable);
+      List<Product> listProducts = products.getContent();
+
+      model.addAttribute("products", listProducts);
       return "admin/product/show";
   }
   
