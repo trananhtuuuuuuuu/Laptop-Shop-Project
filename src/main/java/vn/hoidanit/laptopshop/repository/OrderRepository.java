@@ -10,7 +10,9 @@ import vn.hoidanit.laptopshop.domain.User;
  
  @Repository
  public interface OrderRepository extends JpaRepository<Order, Long> {
-  Order save(Order order);
-  User getUserById(long id);
-  List<Order> findAll();
+  // Order save(Order order);
+  // User getUserById(long id);
+  // List<Order> findAll();
+  //List<User> findByUser(User user);
+  List<Order> findByUser(User user);
  }

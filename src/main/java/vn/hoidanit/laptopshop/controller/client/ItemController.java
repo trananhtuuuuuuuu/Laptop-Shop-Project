@@ -49,7 +49,7 @@ public class ItemController {
       HttpSession session = request.getSession(false);
       Long productId = id;
       String email = (String)session.getAttribute("email");
-      this.productService.handleAddProductToCart(email, productId, session);
+      this.productService.handleAddProductToCart(email, productId, session, 1);
       
       return "redirect:/";
   }
@@ -102,57 +102,70 @@ public class ItemController {
 
 
   @GetMapping("/checkout")
-     public String getCheckOutPage(Model model, HttpServletRequest request) {
-         User currentUser = new User();// null
-         HttpSession session = request.getSession(false);
-         long id = (long) session.getAttribute("id");
-         currentUser.setId(id);
+  public String getCheckOutPage(Model model, HttpServletRequest request) {
+    User currentUser = new User();// null
+    HttpSession session = request.getSession(false);
+    long id = (long) session.getAttribute("id");
+    currentUser.setId(id);
  
-         Cart cart = this.productService.fetchByUser(currentUser);
+    Cart cart = this.productService.fetchByUser(currentUser);
  
-         List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
+    List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
  
-         double totalPrice = 0;
-         for (CartDetail cd : cartDetails) {
-             totalPrice += cd.getPrice() * cd.getQuantity();
-         }
+    double totalPrice = 0;
+    for(CartDetail cd : cartDetails) {
+      totalPrice += cd.getPrice() * cd.getQuantity();
+    }
  
-         model.addAttribute("cartDetails", cartDetails);
-         model.addAttribute("totalPrice", totalPrice);
+    model.addAttribute("cartDetails", cartDetails);
+    model.addAttribute("totalPrice", totalPrice);
  
-         return "client/cart/checkout";
-     }
+    return "client/cart/checkout";
+    }
  
-     @PostMapping("/confirm-checkout")
-     public String getCheckOutPage(@ModelAttribute("cart") Cart cart) {
-         List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
-         this.productService.handleUpdateCartBeforeCheckout(cartDetails);
-         return "redirect:/checkout";
-     }
+  @PostMapping("/confirm-checkout")
+  public String getCheckOutPage(@ModelAttribute("cart") Cart cart) {
+      List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
+      this.productService.handleUpdateCartBeforeCheckout(cartDetails);
+      return "redirect:/checkout";
+  }
  
-     @PostMapping("/place-order")
-     public String handlePlaceOrder(
-             HttpServletRequest request,
-             @RequestParam("receiverName") String receiverName,
-             @RequestParam("receiverAddress") String receiverAddress,
-             @RequestParam("receiverPhone") String receiverPhone) {
-         //logic
+  @PostMapping("/place-order")
+  public String handlePlaceOrder(
+    HttpServletRequest request,
+    @RequestParam("receiverName") String receiverName,
+    @RequestParam("receiverAddress") String receiverAddress,
+    @RequestParam("receiverPhone") String receiverPhone) {
+      //logic
 
-         User currentUser = new User();// null
-         HttpSession session = request.getSession(false);
-         long id = (long) session.getAttribute("id");
-         currentUser.setId(id);
+    User currentUser = new User();// null
+    HttpSession session = request.getSession(false);
+    long id = (long) session.getAttribute("id");
+    currentUser.setId(id);
 
-         this.productService.handlePlaceOrder(currentUser, session, receiverName, receiverAddress, receiverPhone);
+    this.productService.handlePlaceOrder(currentUser, session, receiverName, receiverAddress, receiverPhone);
  
-         return "redirect:/thanks";
-     }
+    return "redirect:/thanks";
+  }
 
-     @GetMapping("/thanks")
-     public String getMethodName(Model model) {
-         return "client/cart/thanks";
-     }
+  @GetMapping("/thanks")
+  public String getThanks(Model model) {
+      return "client/cart/thanks";
+  }
      
+
+     
+  @PostMapping("/add-product-from-view-detail")
+  public String handleAddProductFromViewDetail(
+          @RequestParam("id") long id,
+          @RequestParam("quantity") long quantity,
+          HttpServletRequest request) {
+      HttpSession session = request.getSession(false);
+
+      String email = (String) session.getAttribute("email");
+      this.productService.handleAddProductToCart(email, id, session, quantity);
+      return "redirect:/product/" + id;
+  }
   
   
   
