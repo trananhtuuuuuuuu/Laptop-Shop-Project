@@ -3,6 +3,9 @@ package vn.hoidanit.laptopshop.controller.admin;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,10 +61,20 @@ public class UserController{
 
 
   @GetMapping("admin/user") // RequestMapping mean get data, so default method is GET
-  public String getUserPage(Model model){
-    List<User> users = this.userService.getAllUsers();
+  public String getUserPage(Model model,
+  @RequestParam("page") int page){
+
+
+    Pageable pageable = PageRequest.of(page - 1, 2);
+    Page<User> users = this.userService.getAllUsers(pageable);
+
+    List<User> listUsers = users.getContent();
     //System.out.println(users);
-    model.addAttribute("users", users);
+    model.addAttribute("users", listUsers);
+
+    model.addAttribute("currentPage", page);
+
+    model.addAttribute("totalPages", users.getTotalPages());
     return "admin/user/show";
    
   }

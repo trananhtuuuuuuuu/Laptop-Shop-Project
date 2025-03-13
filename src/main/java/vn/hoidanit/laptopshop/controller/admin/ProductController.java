@@ -3,10 +3,12 @@ package vn.hoidanit.laptopshop.controller.admin;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,17 +21,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 import vn.hoidanit.laptopshop.domain.Product;
+import vn.hoidanit.laptopshop.repository.CartDetailRepository;
 import vn.hoidanit.laptopshop.service.ProductService;
 import vn.hoidanit.laptopshop.service.UploadService;
 
 
-
-
-
-
-
 @Controller
 public class ProductController {
+
+    private final CartDetailRepository cartDetailRepository;
+
+    private final DaoAuthenticationProvider authProvider;
 
   private final ProductService productService;
 
@@ -37,9 +39,11 @@ public class ProductController {
 
 
   public ProductController(ProductService productService,
-  UploadService uploadService) {
+  UploadService uploadService, DaoAuthenticationProvider authProvider, CartDetailRepository cartDetailRepository) {
     this.productService = productService;
     this.uploadService = uploadService;
+    this.authProvider = authProvider;
+    this.cartDetailRepository = cartDetailRepository;
   }
 
 
@@ -83,15 +87,27 @@ public class ProductController {
 
 
   @GetMapping("/admin/product")
-  public String postProduct(Model model,
-  @RequestParam("page") int page) {
-
+  public String getProduct(Model model,
+  @RequestParam("page") Optional<String> pageOptional) {
     //thực tế thì DB quan tâm 2 tham số laf offset và limit
     //client chỉ quan tâm page, truyền bằng page hoặc limit
     // Ví dụ page = 1 . limit = 10 thì
     // dưới DB có 100 rows. Ví dụ count = 100 => chia limit = 10 pages
 
-    Pageable pageable = PageRequest.of(page - 1, 2); // tham số đầu tiên là pageNumber: La phía gửi lên từ client
+    int page = 1;
+    try{ 
+      if(pageOptional.isPresent()){ 
+        //convert from String to int
+        page = Integer.parseInt(pageOptional.get());
+      }
+      else{
+        //page = 1
+      }
+    } catch(Exception e){
+      //page = 1
+    }
+
+    Pageable pageable = PageRequest.of(page - 1, 5); // tham số đầu tiên là pageNumber: La phía gửi lên từ client
     // và tham số thứ 2 là pageSize: Số lượng phần tử muốn lấy
 
       Page<Product> products = this.productService.getAllProducts(pageable);
