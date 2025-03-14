@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import org.springframework.ui.Model;
 import vn.hoidanit.laptopshop.domain.Order;
-import vn.hoidanit.laptopshop.domain.Product;
 import vn.hoidanit.laptopshop.service.OrderService;
 
 import org.springframework.web.bind.annotation.PostMapping;

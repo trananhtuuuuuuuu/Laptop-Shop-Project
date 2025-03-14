@@ -5,7 +5,6 @@ package vn.hoidanit.laptopshop.repository;
 
 import java.util.List;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.SpecialAction;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +16,7 @@ import vn.hoidanit.laptopshop.domain.Product;
 
 
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
-  Product save(Product product);
+  //Product save(Product product);
 
   List<Product> findAll();
 

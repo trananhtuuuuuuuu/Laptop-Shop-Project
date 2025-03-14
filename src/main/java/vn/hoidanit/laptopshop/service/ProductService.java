@@ -2,10 +2,17 @@ package vn.hoidanit.laptopshop.service;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
-
+import vn.hoidanit.laptopshop.controller.admin.DashboardController;
+import vn.hoidanit.laptopshop.controller.admin.ProductController;
+import vn.hoidanit.laptopshop.controller.client.HomePageController;
 import jakarta.servlet.http.HttpSession;
 import vn.hoidanit.laptopshop.domain.Cart;
 import vn.hoidanit.laptopshop.domain.CartDetail;
@@ -49,13 +56,28 @@ public class ProductService {
     return this.productRepository.findById(id);
   }
 
+
+
+
+
+
   public void deleteProduct(long id) {
       this.productRepository.deleteById(id);
   }
 
+
+
+
+
+
+
   public Product handleSaveProduct(Product product){
     return this.productRepository.save(product);
   }
+
+
+
+
 
 
   public Page<Product> getAllProducts(Pageable pageable){
@@ -63,14 +85,17 @@ public class ProductService {
   }
 
 
-  public Page<Product> getAllProducts(Pageable pageable, String name){
-    return this.productRepository.findAll(ProductSpecs.nameLike(name), pageable);
-  }
 
 
+
+  
   public Cart fetchByUser(User user){
     return this.cartRepository.findByUser(user);
   }
+
+
+
+
 
   public void handleAddProductToCart(String email, long productId, HttpSession session, long quantity){
     //check user đã có Cart chưa? Nếu chưa -> Tạo mới
@@ -148,9 +173,15 @@ public class ProductService {
   }
 
 
+
+
+
   public CartDetail getCartDetailById(long id){
     return this.cartDetailRepository.findById(id);
   }
+
+
+
 
 
   public void deleteCartDetail(long cartDetailId, HttpSession session){
@@ -179,6 +210,9 @@ public class ProductService {
   }
 
 
+
+
+
   public void handleUpdateCartBeforeCheckout(List<CartDetail> cartDetails) {
     for (CartDetail cartDetail : cartDetails) {
         CartDetail cdOptional = this.cartDetailRepository.findById(cartDetail.getId());
@@ -188,6 +222,10 @@ public class ProductService {
         }
     }
   }
+
+
+
+
 
 
   public void handlePlaceOrder(
@@ -241,17 +279,117 @@ public class ProductService {
 
   }
 
+
+
+
+
+
+
+  //case 0:
+  public Page<Product> getAllProducts(Pageable pageable, String name){
+    return this.productRepository.findAll(ProductSpecs.nameLike(name), pageable);
+  }
+
+
+  //case 1:
   public Page<Product> getGreaterThanProductWithPrice(Pageable pageable, double price){
     return this.productRepository.findAll(ProductSpecs.minPrice(price), pageable);
   }
 
+
+  //case 2:
   public Page<Product> getLessThanProductWithPrice(Pageable pageable, double price){
     return this.productRepository.findAll(ProductSpecs.maxPrice(price), pageable);
   }
 
-  public Page<Product> getFactoryProduct(Pageable pageable, String factory){
+
+  //case 3:
+  public Page<Product> getOneFactoryProduct(Pageable pageable, String factory){
+    return this.productRepository.findAll(ProductSpecs.equalOneFactory(factory), pageable);
+  }
+
+  //case 4:
+  public Page<Product> getFactoryProduct(Pageable pageable, List<String> factory){
     return this.productRepository.findAll(ProductSpecs.equalFactory(factory), pageable);
   }
+
+  //case 5:
+  public Page<Product> getPriceProduct(Pageable pageable, String price){
+    //eg: price 10-toi-15-trieu
+    double min = Double.MIN_VALUE;
+    double max = Double.MAX_VALUE;
+    if(price.equals("10-toi-15-trieu")){
+      min = 10000000;
+      max = 15000000;
+    }
+    else if(price.equals("15-toi-30-trieu")){
+      min = 15000000;
+      max = 30000000;
+    }
+    else if(price.equals("15-toi-20-trieu")){
+      min = 15000000;
+      max = 20000000;
+    }
+    else if(price.equals("tren-20-trieu")){
+      min = 20000000;
+      max = Double.MAX_VALUE;
+    }
+    else if(price.equals("duoi-10-trieu")){
+      min = 0;
+      max = 10000000;
+    }
+    else if(price.equals("duoi-30-trieu")){
+      min = 0;
+      max = 30000000;
+    }
+    
+    else{
+      return this.productRepository.findAll(pageable);
+    }
+    return this.productRepository.findAll(ProductSpecs.matchPrice(min, max), pageable);
+  }
+
+  //case 6:
+  public Page<Product> getListPriceProduct(Pageable page, List<String> price) {
+         Specification<Product> combinedSpec = (root, query, criteriaBuilder) -> criteriaBuilder.disjunction();
+         int count = 0;
+         for (String p : price) {
+             double min = 0;
+             double max = 0;
+ 
+             // Set the appropriate min and max based on the price range string
+             switch (p) {
+                 case "10-toi-15-trieu":
+                     min = 10000000;
+                     max = 15000000;
+                     count++;
+                     break;
+                 case "15-toi-20-trieu":
+                     min = 15000000;
+                     max = 20000000;
+                     count++;
+                     break;
+                 case "20-toi-30-trieu":
+                     min = 20000000;
+                     max = 30000000;
+                     count++;
+                     break;
+                 // Add more cases as needed
+             }
+ 
+             if (min != 0 && max != 0) {
+                 Specification<Product> rangeSpec = ProductSpecs.matchListPrice(min, max);
+                 combinedSpec = combinedSpec.or(rangeSpec);
+             }
+         }
+ 
+         // Check if any price ranges were added (combinedSpec is empty)
+         if (count == 0) {
+             return this.productRepository.findAll(page);
+         }
+ 
+         return this.productRepository.findAll(combinedSpec, page);
+     }
 
 
 }

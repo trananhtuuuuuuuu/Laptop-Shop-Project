@@ -2,6 +2,7 @@ package vn.hoidanit.laptopshop.controller.client;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -210,47 +211,26 @@ public class ItemController {
     //case 1: filter by min-price
     // double min = minOptional.isPresent() ? Double.parseDouble(minOptional.get()) : 0;
     // Page<Product> pageProducts = this.productService.getGreaterThanProductWithPrice(pageable, min);
-    
-
-
 
     //case 2: filter by max-price
     // double max = maxOptional.isPresent() ? Double.parseDouble(maxOptional.get()) : 0;
     // Page<Product> pageProducts = this.productService.getLessThanProductWithPrice(pageable, max);
     
-
     //case 3: filter by factory
-    String factory = factoryOptional.isPresent() ? factoryOptional.get() : "";
-    Page<Product> pageProducts = this.productService.getFactoryProduct(pageable, factory);
-
-
-
-
-
+    // String factory = factoryOptional.isPresent() ? factoryOptional.get() : "";
+    // Page<Product> pageProducts = this.productService.getOneFactoryProduct(pageable, factory);
 
     //case 4:
-
-
-
-
+    // List<String> factory = Arrays.asList(factoryOptional.get().split(","));
+    // Page<Product> pageProducts = this.productService.getFactoryProduct(pageable, factory);
 
     //case 5:
-
-
-
-
+    // String price = priceOptional.isPresent() ? priceOptional.get() : "";
+    // Page<Product> pageProducts = this.productService.getPriceProduct(pageable, price);
 
     //case 6:
-
-
-
-
-
-
-
-
-
-
+    List<String> price = Arrays.asList(priceOptional.get().split(","));
+    Page<Product> pageProducts = this.productService.getListPriceProduct(pageable, price);
 
 
 

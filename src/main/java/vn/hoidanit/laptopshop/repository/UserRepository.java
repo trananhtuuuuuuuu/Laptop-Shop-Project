@@ -12,7 +12,7 @@ import vn.hoidanit.laptopshop.domain.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-  User save(User user); 
+  // User save(User user); 
 
   Page<User> findAll(Pageable pageable);
 
