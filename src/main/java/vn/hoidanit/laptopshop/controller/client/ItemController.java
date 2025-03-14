@@ -208,9 +208,46 @@ public class ItemController {
 
 
     //case 1: filter by min-price
-    double min = minOptional.isPresent() ? Double.parseDouble(minOptional.get()) : 0;
-    Page<Product> pageProducts = this.productService.getLessThanProductWithPrice(pageable, min);
+    // double min = minOptional.isPresent() ? Double.parseDouble(minOptional.get()) : 0;
+    // Page<Product> pageProducts = this.productService.getGreaterThanProductWithPrice(pageable, min);
     
+
+
+
+    //case 2: filter by max-price
+    // double max = maxOptional.isPresent() ? Double.parseDouble(maxOptional.get()) : 0;
+    // Page<Product> pageProducts = this.productService.getLessThanProductWithPrice(pageable, max);
+    
+
+    //case 3: filter by factory
+    String factory = factoryOptional.isPresent() ? factoryOptional.get() : "";
+    Page<Product> pageProducts = this.productService.getFactoryProduct(pageable, factory);
+
+
+
+
+
+
+    //case 4:
+
+
+
+
+
+    //case 5:
+
+
+
+
+
+    //case 6:
+
+
+
+
+
+
+
 
 
 

@@ -18,5 +18,16 @@ public class ProductSpecs {
         -> criteriaBuilder.ge(root.get(Product_.PRICE), price);
   }
 
+  public static Specification<Product> maxPrice(double price){
+    return (root, query, criteriaBuilder) 
+        -> criteriaBuilder.le(root.get(Product_.PRICE), price);
+  }
+
+
+  public static Specification<Product> equalFactory(String factory){
+    return (root, query, criteriaBuilder) 
+        -> criteriaBuilder.equal(root.get(Product_.FACTORY), factory);
+  }
+
   
 }

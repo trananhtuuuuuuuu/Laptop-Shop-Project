@@ -241,8 +241,16 @@ public class ProductService {
 
   }
 
-  public Page<Product> getLessThanProductWithPrice(Pageable pageable, double price){
+  public Page<Product> getGreaterThanProductWithPrice(Pageable pageable, double price){
     return this.productRepository.findAll(ProductSpecs.minPrice(price), pageable);
+  }
+
+  public Page<Product> getLessThanProductWithPrice(Pageable pageable, double price){
+    return this.productRepository.findAll(ProductSpecs.maxPrice(price), pageable);
+  }
+
+  public Page<Product> getFactoryProduct(Pageable pageable, String factory){
+    return this.productRepository.findAll(ProductSpecs.equalFactory(factory), pageable);
   }
 
 
