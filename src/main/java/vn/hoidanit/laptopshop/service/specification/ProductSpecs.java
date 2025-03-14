@@ -13,5 +13,10 @@ public class ProductSpecs {
         -> criteriaBuilder.like(root.get(Product_.NAME), "%"+name+"%");
   }
 
+  public static Specification<Product> minPrice(double price){
+    return (root, query, criteriaBuilder) 
+        -> criteriaBuilder.ge(root.get(Product_.PRICE), price);
+  }
+
   
 }

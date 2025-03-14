@@ -241,5 +241,9 @@ public class ProductService {
 
   }
 
+  public Page<Product> getLessThanProductWithPrice(Pageable pageable, double price){
+    return this.productRepository.findAll(ProductSpecs.minPrice(price), pageable);
+  }
+
 
 }

@@ -176,7 +176,12 @@ public class ItemController {
   @GetMapping("/products")
   public String getProducts(Model model,
   @RequestParam("page") Optional<String> pageOptional,
-  @RequestParam("name") Optional<String> nameOptional) {
+  @RequestParam("name") Optional<String> nameOptional,
+  @RequestParam("min-price") Optional<String> minOptional,
+  @RequestParam("max-price") Optional<String> maxOptional,
+  @RequestParam("factory") Optional<String> factoryOptional,
+  @RequestParam("price") Optional<String> priceOptional
+  ) {
 
     int page = 1;
     try{ 
@@ -195,9 +200,23 @@ public class ItemController {
     
 
 
-    Pageable pageable = PageRequest.of(0, 10);
-    String name = nameOptional.isPresent() ? nameOptional.get() : "";
-    Page<Product> pageProducts = this.productService.getAllProducts(pageable, name);
+    Pageable pageable = PageRequest.of(page - 1, 60);
+
+    //case 0: filter by name
+    // String name = nameOptional.isPresent() ? nameOptional.get() : "";
+    // Page<Product> pageProducts = this.productService.getAllProducts(pageable, name);
+
+
+    //case 1: filter by min-price
+    double min = minOptional.isPresent() ? Double.parseDouble(minOptional.get()) : 0;
+    Page<Product> pageProducts = this.productService.getLessThanProductWithPrice(pageable, min);
+    
+
+
+
+
+
+
     List<Product> products = pageProducts.getContent(); 
     model.addAttribute("products", products);
     model.addAttribute("currentPage", page);
