@@ -204,8 +204,8 @@ public class ItemController {
     Pageable pageable = PageRequest.of(page - 1, 60);
 
     //case 0: filter by name
-    // String name = nameOptional.isPresent() ? nameOptional.get() : "";
-    // Page<Product> pageProducts = this.productService.getAllProducts(pageable, name);
+    String name = nameOptional.isPresent() ? nameOptional.get() : "";
+    Page<Product> pageProducts = this.productService.getAllProducts(pageable, name);
 
 
     //case 1: filter by min-price
@@ -229,8 +229,8 @@ public class ItemController {
     // Page<Product> pageProducts = this.productService.getPriceProduct(pageable, price);
 
     //case 6:
-    List<String> price = Arrays.asList(priceOptional.get().split(","));
-    Page<Product> pageProducts = this.productService.getListPriceProduct(pageable, price);
+    // List<String> price = Arrays.asList(priceOptional.get().split(","));
+    // Page<Product> pageProducts = this.productService.getListPriceProduct(pageable, price);
 
 
 
