@@ -311,7 +311,7 @@ public class ProductService {
       
     
   public Specification<Product> buildPriceSpecification(List<String> price) {
-    Specification<Product> combinedSpec = Specification.where(null);
+    Specification<Product> combinedSpec = Specification.where(null); // disconjuntion
     //  int count = 0;
       for (String p : price) {
         double min = 0;
