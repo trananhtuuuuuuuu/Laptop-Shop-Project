@@ -19,6 +19,7 @@ import vn.hoidanit.laptopshop.domain.Cart;
 import vn.hoidanit.laptopshop.domain.CartDetail;
 import vn.hoidanit.laptopshop.domain.Product;
 import vn.hoidanit.laptopshop.domain.User;
+import vn.hoidanit.laptopshop.domain.dto.ProductCriterialDTO;
 import vn.hoidanit.laptopshop.service.ProductService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -175,20 +176,15 @@ public class ItemController {
 
 
   @GetMapping("/products")
-  public String getProducts(Model model,
-  @RequestParam("page") Optional<String> pageOptional,
-  @RequestParam("name") Optional<String> nameOptional,
-  @RequestParam("min-price") Optional<String> minOptional,
-  @RequestParam("max-price") Optional<String> maxOptional,
-  @RequestParam("factory") Optional<String> factoryOptional,
-  @RequestParam("price") Optional<String> priceOptional
-  ) {
-
+  public String getProducts(Model model, 
+  ProductCriterialDTO productCriterialDTO
+  ){
+    System.out.println(productCriterialDTO);
     int page = 1;
     try{ 
-      if(pageOptional.isPresent()){ 
+      if(productCriterialDTO.getPage().isPresent()){ 
         //convert from String to int
-        page = Integer.parseInt(pageOptional.get());
+        page = Integer.parseInt(productCriterialDTO.getPage().get());
       }
       else{
         //page = 1
@@ -204,8 +200,10 @@ public class ItemController {
     Pageable pageable = PageRequest.of(page - 1, 60);
 
     //case 0: filter by name
-    String name = nameOptional.isPresent() ? nameOptional.get() : "";
-    Page<Product> pageProducts = this.productService.getAllProducts(pageable, name);
+    // String name = nameOptional.isPresent() ? nameOptional.get() : "";
+    Page<Product> pageProducts = this.productService.getAllProducts(pageable, productCriterialDTO);
+
+    System.out.println(productCriterialDTO);
 
 
     //case 1: filter by min-price
@@ -234,7 +232,8 @@ public class ItemController {
 
 
 
-    List<Product> products = pageProducts.getContent(); 
+    List<Product> products = pageProducts.getContent().size() > 0 ? pageProducts.getContent() : new ArrayList<Product>();
+
     model.addAttribute("products", products);
     model.addAttribute("currentPage", page);
 
